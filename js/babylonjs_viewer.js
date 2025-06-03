@@ -1,0 +1,136 @@
+(function ($, Drupal, drupalSettings) {
+  Drupal.behaviors.babylonjsViewer = {
+    attach: function (context, settings) {
+      once('babylonjs-viewer', '.babylonjs-viewer', context).forEach(function (element) {
+        const fileUrl = drupalSettings?.babylonjs_viewer?.file_url;
+
+        if (!fileUrl) {
+          return;
+        }
+
+        const canvas = element.querySelector('canvas');
+        if (!canvas) {
+          return;
+        }
+
+        const engine = new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true, alpha: true });
+        const scene = new BABYLON.Scene(engine);
+        scene.clearColor = new BABYLON.Color4(0, 0, 0, 0); // Fondo transparente
+
+        let activeCamera;
+
+        BABYLON.SceneLoader.Append("", fileUrl, scene, function () {
+
+          scene.createDefaultCameraOrLight(true, true, true);
+
+          let activeCamera = null;
+          scene.cameras.forEach(cam => {
+            if (cam instanceof BABYLON.ArcRotateCamera) {
+              activeCamera = cam;
+            }
+          });
+
+          if (!activeCamera) {
+            return;
+          }
+
+          const initialCameraState = {
+            alpha: activeCamera.alpha,
+            beta: activeCamera.beta,
+            radius: activeCamera.radius,
+            target: activeCamera.target.clone()
+          };
+          
+          const initialAlpha = activeCamera.alpha;
+          const initialBeta = activeCamera.beta;
+          const initialRadius = activeCamera.radius;
+          const initialTarget = activeCamera.target.clone();
+
+          // Configurar límites para la cámara
+          activeCamera.allowUpsideDown = true;
+          activeCamera.lowerBetaLimit = -Infinity;
+          activeCamera.upperBetaLimit = Infinity;
+          activeCamera.lowerRadiusLimit = initialRadius * -10;
+          activeCamera.upperRadiusLimit = initialRadius * 10;
+
+          // 🔵 Agrega una luz direccional desde una posición y dirección específicas
+          const directionalLight = new BABYLON.DirectionalLight("dirLight", new BABYLON.Vector3(0, 1, 0), scene);
+          directionalLight.position = new BABYLON.Vector3(5, 5, 5); // desde dónde viene la luz
+          directionalLight.intensity = 2.5; // qué tan fuerte es la luz
+
+          
+          // Ajustes para que todas las caras estén bien iluminadas
+          scene.meshes.forEach(mesh => {
+            if (mesh.material) {
+              mesh.receiveShadows = false;
+              mesh.material.backFaceCulling = false;
+              
+              if (mesh.material instanceof BABYLON.PBRMaterial) {
+                mesh.material.environmentIntensity = 1.5;
+                mesh.material.directIntensity = 1;
+                mesh.material.shadowIntensity = 0;
+              }
+            }
+          });
+
+          // 🔥 Ahora conectamos los botones
+          const controlsContainer = element.querySelector('.viewer-controls');
+          if (controlsContainer) {;
+
+            const rotateStep = 0.5;
+            const zoomStep = initialRadius * 0.2;
+
+            controlsContainer.querySelector('#resetView')?.addEventListener('click', () => {
+              activeCamera.alpha = initialAlpha;
+              activeCamera.beta = initialBeta;
+              activeCamera.radius = initialRadius;
+              activeCamera.target = initialTarget.clone();
+            });
+
+            controlsContainer.querySelector('#rotateLeft')?.addEventListener('click', () => {
+              activeCamera.alpha += rotateStep;
+            });
+
+            controlsContainer.querySelector('#rotateRight')?.addEventListener('click', () => {
+              activeCamera.alpha -= rotateStep;
+            });
+
+            controlsContainer.querySelector('#rotateUp')?.addEventListener('click', () => {
+              activeCamera.beta = Math.max(activeCamera.lowerBetaLimit, activeCamera.beta - rotateStep);
+            });
+
+            controlsContainer.querySelector('#rotateDown')?.addEventListener('click', () => {
+              activeCamera.beta = Math.min(activeCamera.upperBetaLimit, activeCamera.beta + rotateStep);
+            });
+
+            controlsContainer.querySelector('#zoomIn')?.addEventListener('click', () => {
+              activeCamera.radius = Math.max(activeCamera.lowerRadiusLimit, activeCamera.radius - zoomStep);
+            });
+
+            controlsContainer.querySelector('#zoomOut')?.addEventListener('click', () => {
+              activeCamera.radius = Math.min(activeCamera.upperRadiusLimit, activeCamera.radius + zoomStep);
+            });
+            
+            controlsContainer.querySelector('#resetView')?.addEventListener('click', () => {
+              activeCamera.alpha = initialCameraState.alpha;
+              activeCamera.beta = initialCameraState.beta;
+              activeCamera.radius = initialCameraState.radius;
+              activeCamera.target = initialCameraState.target.clone();
+            });
+
+          } else {
+          }
+
+          engine.runRenderLoop(function () {
+            scene.render();
+          });
+        }, null, function (scene, message, exception) {
+        });
+
+        window.addEventListener('resize', function () {
+          engine.resize();
+        });
+      });
+    }
+  };
+})(jQuery, Drupal, drupalSettings);

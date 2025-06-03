@@ -1,0 +1,125 @@
+/* Contenedor principal */
+.babylonjs-viewer {
+  position: relative;
+  width: 100%;
+  height: 500px;
+}
+
+/* Panel de controles */
+.viewer-controls {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none; /* Permite interactuar con el canvas */
+}
+
+/* Grupos de controles */
+.zoom-controls {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: auto;
+}
+
+.rotation-controls {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+  pointer-events: auto;
+}
+
+.horizontal-rotations {
+  display: flex;
+  gap: 10px;
+}
+
+/* Botón reset */
+.reset-button {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  pointer-events: auto;
+}
+
+/* Estilo base de botones */
+.viewer-controls button {
+  background: rgba(255, 255, 255, 0);
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.2s ease;
+  color: #333;
+}
+
+/* Efecto hover */
+.viewer-controls button:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: scale(1.1);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+}
+
+.directional-pad {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  gap: 5px;
+  pointer-events: auto;
+}
+
+.dpad-row {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.dpad-cell {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Ajustes específicos para los botones */
+.directional-pad button {
+  margin: 0;
+  width:100%;
+  height: 100%;
+}
+
+/* Estilo para los iconos */
+.viewer-controls i {
+  font-size: 16px;
+  color: #333;
+  transition: all 0.2s ease;
+}
+
+/* Efecto hover en los botones */
+.viewer-controls button:hover i {
+  color: #0066cc;
+}
+
+/* Ajusta el tamaño de los botones si es necesario */
+.viewer-controls button {
+  /* Mantén tus estilos existentes */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

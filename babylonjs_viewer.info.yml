@@ -1,0 +1,7 @@
+name: 'INAH BabylonJS Viewer'
+type: module
+description: 'A lightweight Babylon.js field formatter for 3D model visualization'
+package: Media
+core_version_requirement: ^9.1 || ^10 || ^11
+dependencies:
+  - token:token
