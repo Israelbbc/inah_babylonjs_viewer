@@ -118,6 +118,78 @@
               activeCamera.target = initialCameraState.target.clone();
             });
 
+            const completeViewButton = controlsContainer.querySelector('#completeView');
+            if (completeViewButton) {
+              completeViewButton.addEventListener('click', () => {
+                if (!document.fullscreenElement) {
+                  if (element.requestFullscreen) {
+                    element.requestFullscreen();
+                  } else if (element.webkitRequestFullscreen) {
+                    element.webkitRequestFullscreen();
+                  } else if (element.msRequestFullscreen) {
+                    element.msRequestFullscreen();
+                  }
+                } else {
+                  if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                  } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                  } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                  }
+                }
+              });
+            }
+
+            // 🔥 Evento para manejar fullscreenchange
+            document.addEventListener('fullscreenchange', () => {
+              if (document.fullscreenElement === element) {
+                // En fullscreen
+                element.classList.add('fullscreen-active');
+                element.style.width = '100%';
+                element.style.height = '100%';
+                canvas.style.width = '100%';
+                canvas.style.height = '100%';
+
+                canvas.width = canvas.clientWidth;
+                canvas.height = canvas.clientHeight;
+
+                scene.clearColor = new BABYLON.Color4(1, 1, 1, 1); // Fondo blanco
+
+                const icon = completeViewButton.querySelector('i');
+                if (icon) {
+                  icon.classList.remove('fa-expand');
+                  icon.classList.add('fa-compress');
+                }
+
+                engine.resize();
+
+              } else {
+                // Salimos de fullscreen
+                element.classList.remove('fullscreen-active');
+                element.style.width = '';
+                element.style.height = '';
+                canvas.style.width = '100%';
+                canvas.style.height = '500px';
+
+                canvas.width = canvas.clientWidth;
+                canvas.height = canvas.clientHeight;
+
+                scene.clearColor = new BABYLON.Color4(0, 0, 0, 0); // Fondo transparente
+
+                const icon = completeViewButton.querySelector('i');
+                  if (icon) {
+                    icon.classList.remove('fa-compress');
+                    icon.classList.add('fa-expand');
+                  }
+              }
+              setTimeout(()=> {
+                engine.resize();
+              }, 100);
+            });
+
+
+
           } else {
           }
 
