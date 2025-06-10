@@ -14,6 +14,54 @@
         }
 
         const engine = new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true, alpha: true });
+
+        BABYLON.DefaultLoadingScreen.prototype.displayLoadingUI = function () {                                        
+           if (this._isLoading) return;
+           this._isLoading = true;
+           
+           const canvas = document.getElementById('babylonjs-canvas');
+           const rect = canvas.getBoundingClientRect();
+           
+           // Creamos el div de carga
+           const loadingDiv = document.createElement("div");
+           loadingDiv.id = "customLoadingScreenDiv";
+           loadingDiv.style.position = 'absolute';
+           loadingDiv.style.top = `${canvas.offsetTop}px`;
+           loadingDiv.style.left = `${canvas.offsetLeft}px`;
+           loadingDiv.style.width = `${canvas.clientWidth}px`;
+           loadingDiv.style.height = `${canvas.clientHeight}px`;
+           loadingDiv.style.backgroundColor = 'black';  // Fondo negro
+           loadingDiv.style.zIndex = '1000';
+           loadingDiv.style.display = 'flex';
+           loadingDiv.style.alignItems = 'center';
+           loadingDiv.style.justifyContent = 'center';
+
+           const loadingImage = document.createElement('img');
+           loadingImage.alt = 'Cargando...';
+           loadingImage.style.width = '250px';
+           loadingImage.style.height = '250px';
+           
+           // Asignamos la ruta desde drupalSettings
+           loadingImage.src = drupalSettings.path.baseUrl + 'sites/default/files/babylonjs_viewer/screen-load.png';
+           
+           // Agregamos la imagen al div
+           loadingDiv.appendChild(loadingImage);
+           
+           // Agregamos el div al contenedor principal
+           canvas.parentElement.appendChild(loadingDiv);
+
+          };                                                                                                          
+                                                                                                                       
+        BABYLON.DefaultLoadingScreen.prototype.hideLoadingUI = function () {                                           
+          const loadingDiv = document.getElementById('customLoadingScreenDiv');                                        
+          if (loadingDiv) {                                                                                            
+            loadingDiv.remove();                                                                                       
+          }                                                                                                            
+          this._isLoading = false;                                                                                                                                                                
+        };                                                                                                             
+                                                                                                                       
+        engine.displayLoadingUI(); // .... Mostrar el loading screen 
+
         const scene = new BABYLON.Scene(engine);
         scene.clearColor = new BABYLON.Color4(0, 0, 0, 0); // Fondo transparente
 
