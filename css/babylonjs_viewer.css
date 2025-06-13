@@ -25,6 +25,9 @@
   top: 0;
   left: 0;
   pointer-events: none; /* Permite interactuar con el canvas */
+  -webkit-transform: translateZ(0); /* Mejora render en Safari */
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
 }
 
 /* Grupos de controles */
@@ -70,8 +73,12 @@
   background: rgba(255, 255, 255, 0);
   border: 1px solid #ddd;
   border-radius: 50%;
-  width: 30px;
-  height: 30px;
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px;
+  min-height: 30px;
+  max-width: 30px;
+  max-height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -79,7 +86,10 @@
   font-size: 18px;
   transition: all 0.2s ease;
   color: #333;
+  box-sizing: border-box;
+  padding: 0;
 }
+
 
 /* Efecto hover */
 .viewer-controls button:hover {
@@ -114,16 +124,23 @@
 
 /* Ajustes específicos para los botones */
 .directional-pad button {
-  margin: 0;
-  width:100%;
-  height: 100%;
+  width: 30%;
+  height: 30%;
+  padding: 0;
 }
 
 /* Estilo para los iconos */
-.viewer-controls i {
-  font-size: 16px;
+.viewer-controls button i {
+  font-size: 16px !important;
+  width: 16px !important;
+  height: 16px !important;
+  line-height: 16px !important;
+  display: block;
+  text-align: center;
   color: #333;
+  pointer-events: none;
   transition: all 0.2s ease;
+  box-sizing: border-box;
 }
 
 /* Efecto hover en los botones */
@@ -131,10 +148,3 @@
   color: #0066cc;
 }
 
-/* Ajusta el tamaño de los botones si es necesario */
-.viewer-controls button {
-  /* Mantén tus estilos existentes */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
