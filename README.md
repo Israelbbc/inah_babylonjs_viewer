@@ -4,6 +4,13 @@
 
 ---
 
+## ⚙️ Funcionamiento
+
+Se comparte la liga de un objeto 3D del Repositorio Institucional del Instituto Nacional de Antropología e Historia (INAH):
+	https://repositorio.inah.gob.mx/node/614742
+
+---
+
 ## 📦 Nombre del módulo
 
 El nombre interno del módulo es: babylonjs_viewer 
@@ -18,25 +25,8 @@ Aunque el repositorio se llama `inah_babylonjs_viewer`, **la carpeta y declaraci
 - Visualización 3D interactiva usando Babylon.js.
 - Formateador de campo para archivos de medios (`Media`) con extensiones `.glb`.
 - Compatible con dispositivos móviles, pantallas táctiles y navegación Fullscreen.
-- Controles personalizables en el visor (zoom, rotación, iluminación, etc.).
+- Controles personalizados en el visor (zoom, rotación y reinicio de posición).
 - Integración simple sin necesidad de configurar vistas personalizadas.
-
----
-
-## 📁 Estructura del módulo
-
-babylonjs_viewer/
-├── css/
-│ └── babylonjs_viewer.css
-├── js/
-│ └── babylonjs_viewer.js
-├── templates/
-│ └── babylonjs-formatter.html.twig
-├── src/Plugin/Field/FieldFormatter/
-│ └── BabylonJS3DFormatter.php
-├── babylonjs_viewer.info.yml
-├── babylonjs_viewer.libraries.yml
-├── babylonjs_viewer.module
 
 ---
 
