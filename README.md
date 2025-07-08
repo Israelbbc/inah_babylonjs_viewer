@@ -78,5 +78,5 @@ Pull requests, suggestions, and issue reports are welcome!
 **Israel Bustamante Colín**  
 Jefe de Departamento, Dirección de Innovación Institucional (DINNI)  
 Instituto Nacional de Antropología e Historia (INAH)  
-📧 israel_bustamante@inah.gob.mx  
-	🐙 GitHub: [Israelbbc](https://github.com/Israelbbc)
+*📧 israel_bustamante@inah.gob.mx  
+	*🐱 GitHub: [Israelbbc](https://github.com/Israelbbc)
